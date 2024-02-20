@@ -1,12 +1,12 @@
 import numpy as np
 
 
-def correcting_the_matrix(matrix: list[list[int]], b):
+def correcting_the_matrix(matrix: list[list[float]], b):
     print("Корректировка")
     arr = []
     for i in range(len(matrix)):
         summ = sum(map(abs, matrix[i]))
-        maximum = 0
+        maximum = 0.0
         for j in matrix[i]:
             if abs(maximum) < abs(j):
                 maximum = j
@@ -16,10 +16,17 @@ def correcting_the_matrix(matrix: list[list[int]], b):
         elif abs(maximum) >= summ:
             f = matrix[i].index(maximum)
             j = f + 1
-            while maximum != matrix[i][j]:
+            is_two = False
+            while j < len(matrix):
+                if maximum == matrix[i][j]:
+                    is_two = True
+                    break
                 j += 1
-            arr.append((f, j))
-    if len(arr) == len(set(arr)):
+            if is_two:
+                arr.append((f, j))
+            else:
+                arr.append(f)
+    if len(matrix) == len(set(arr)):
         added_indexes = []
         new_matrix = [[] for _ in range(len(matrix))]
         new_arr = [-1 for _ in range(len(arr))]
@@ -57,7 +64,7 @@ def check_converge(iterator, x, x_new, eps) -> bool:
     return flag
 
 
-def check_diagonal(matrix: list[list[int]]):
+def check_diagonal(matrix: list[list[float]]):
     is_correct = True
     flag = False
     for i in range(len(matrix)):
@@ -71,7 +78,8 @@ def check_diagonal(matrix: list[list[int]]):
         else:
             is_correct = False
             print(f"{abs(matrix[i][i])} < {summ}")
-    return is_correct and flag
+    a = is_correct and flag
+    return a
 
 
 def print_solution(matrix, x):
@@ -87,19 +95,19 @@ def print_solution(matrix, x):
         print(' ={:.4}'.format(summa))
 
 
-def print_matrix(matrix: list[list[int]]):
+def print_matrix(matrix: list[list[float]]):
     mlen = (max(map(len, map(str, col))) for col in zip(*matrix))
     s = f"{' '.join(f'{{:>{ml}}}' for ml in mlen)}"
     for x in matrix:
         print(s.format(*x))
 
 
-def get_solution(matrix: list[list[int]], b: list[int], eps: float):
+def get_solution(matrix: list[list[float]], b: list[float], eps: float):
     n = len(matrix)
     if not check_diagonal(matrix):
         matrix = correcting_the_matrix(matrix, b)
         if not check_diagonal(matrix):
-            print("Неккоректная матрица")
+            print("Неудалость привести к диагональьному виду")
             return
         print_matrix(matrix)
     x = np.zeros(n)

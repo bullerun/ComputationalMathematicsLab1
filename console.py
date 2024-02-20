@@ -6,24 +6,25 @@ def input_free_members(n: int):
     for i in range(n):
         s = input("Введите свободный член для " + str(i + 1) + " уравнения: ")
         try:
-            arr.append(int(s))
+            arr.append(float(s))
         except ValueError:
-            print("Некорректный коэффициенты ")
+            print("Некорректный коэффициент")
     return arr
 
 
-def input_coefficients(n: int, i: int) -> list[int]:
+def input_coefficients(n: int, i: int) -> list[float]:
     while True:
         arr = []
         s = input("Введите коэффициенты " + str(i + 1) + " строки матрицы через пробел: ")
         if len(s.split()) != n:
             print("Неверное количество коэффицентов")
         else:
-            for (i, c) in enumerate(s.split()):
+            for (j, c) in enumerate(s.split()):
                 try:
-                    arr.append(int(c))
+                    c = c.replace(",", ".")
+                    arr.append(float(c))
                 except ValueError:
-                    print("аргумент " + str(i + 1) + " некорректный")
+                    print("аргумент " + str(j + 1) + " некорректный")
         if len(arr) == n:
             return arr
 
@@ -32,16 +33,19 @@ def input_of_the_dimension() -> int:
     while True:
         s = input("Введите размер матрицы: ")
         try:
-            if int(s) <= 20:
+            if 1 <= int(s) <= 20:
                 return int(s)
+            else:
+                print("ошибка 1 <= n <= 20")
         except ValueError:
             print("Некорректно введена размерность, она должна быть целым числом и меньше 21")
 
 
 def input_accuracy() -> float:
     while True:
-        s = input("Введите точность вычислений: ")
+        s = input("Введите точность вычислений: ").replace(",", ".")
         try:
+            s = s.replace(",", ".")
             return float(s)
         except ValueError:
             print("Некорректно введена точность")

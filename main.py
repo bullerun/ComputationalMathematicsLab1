@@ -12,6 +12,8 @@ def main():
         s = input()
         try:
             n = int(s)
+            if n > 3 or n < 0:
+                print("ошибка введна некорректная цифра")
         except ValueError:
             print(f'{s} не является числом')
     if n == 1:
